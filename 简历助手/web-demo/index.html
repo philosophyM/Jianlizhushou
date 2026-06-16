@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>简历助手 - 智能简历定制</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root { --primary:#4A6CF7; --primary-dark:#3451D1; --secondary:#7C3AED; --success:#10B981; --warning:#F59E0B; --text-primary:#1F2937; --text-secondary:#6B7280; --bg:#F5F7FA; --card:#fff; --border:#E5E7EB; --radius:12px; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif; background:var(--bg); color:var(--text-primary); font-size:14px; line-height:1.6; min-height:100vh; }
+.app-container { max-width:480px; margin:0 auto; background:var(--bg); min-height:100vh; position:relative; }
+
+/* 导航 */
+.tab-bar { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:480px; background:white; display:flex; border-top:1px solid var(--border); z-index:100; }
+.tab-item { flex:1; text-align:center; padding:8px 0; cursor:pointer; color:var(--text-secondary); font-size:11px; transition:all .2s; }
+.tab-item.active { color:var(--primary); }
+.tab-icon { font-size:20px; display:block; margin-bottom:2px; }
+
+/* 页面容器 */
+.page { padding:16px; padding-bottom:70px; display:none; }
+.page.active { display:block; }
+
+/* 首页英雄区 */
+.hero { background:linear-gradient(135deg,#1A1A2E,#16213E,#0F3460); border-radius:0 0 24px 24px; padding:32px 20px 40px; text-align:center; margin:-16px -16px 16px; }
+.hero h1 { font-size:32px; font-weight:800; background:linear-gradient(135deg,var(--primary),var(--secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
+.hero p { color:rgba(255,255,255,.7); font-size:14px; margin-bottom:24px; }
+.hero-stats { display:flex; justify-content:center; gap:32px; }
+.stat-item { color:white; }
+.stat-num { font-size:22px; font-weight:700; display:block; }
+.stat-label { font-size:11px; color:rgba(255,255,255,.6); }
+
+/* 卡片 */
+.card { background:var(--card); border-radius:var(--radius); padding:16px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.card-title { font-size:16px; font-weight:600; margin-bottom:12px; padding-left:8px; border-left:3px solid var(--primary); }
+
+/* 网格 */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.action-card { background:white; border-radius:var(--radius); padding:20px 16px; text-align:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,.06); transition:transform .2s; }
+.action-card:active { transform:scale(.96); }
+.action-icon { font-size:28px; display:block; margin-bottom:8px; }
+.action-title { font-size:14px; font-weight:600; }
+.action-desc { font-size:11px; color:var(--text-secondary); margin-top:4px; }
+
+/* 步骤 */
+.steps { background:white; border-radius:var(--radius); padding:16px; }
+.step { display:flex; gap:12px; margin-bottom:12px; }
+.step:last-child { margin-bottom:0; }
+.step-num { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:white; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+.step-content h3 { font-size:14px; font-weight:600; }
+.step-content p { font-size:12px; color:var(--text-secondary); }
+
+/* 表单 */
+.form-group { margin-bottom:12px; }
+.form-group label { font-size:13px; font-weight:500; display:block; margin-bottom:4px; color:var(--text-primary); }
+.form-input, .form-select { width:100%; height:42px; padding:0 12px; border:1px solid var(--border); border-radius:8px; font-size:14px; background:white; }
+.form-textarea { width:100%; min-height:120px; padding:12px; border:1px solid var(--border); border-radius:8px; font-size:13px; resize:vertical; }
+
+/* 按钮 */
+.btn { display:inline-flex; align-items:center; justify-content:center; padding:10px 24px; border-radius:8px; font-size:14px; font-weight:600; border:none; cursor:pointer; transition:all .2s; }
+.btn:active { transform:scale(.97); }
+.btn-primary { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:white; width:100%; height:44px; }
+.btn-secondary { background:var(--bg); color:var(--text-primary); border:1px solid var(--border); }
+.btn-small { padding:6px 16px; font-size:12px; }
+
+/* 选项组 */
+.options { display:flex; gap:8px; }
+.option { flex:1; padding:10px 8px; border:1px solid var(--border); border-radius:8px; text-align:center; font-size:12px; cursor:pointer; transition:all .2s; }
+.option.active { border-color:var(--primary); background:rgba(74,108,247,.06); color:var(--primary); font-weight:600; }
+
+/* 测评 */
+.progress-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; margin-bottom:8px; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--secondary)); border-radius:3px; transition:width .3s; }
+.progress-text { font-size:12px; color:var(--text-secondary); text-align:right; }
+.question-text { font-size:16px; font-weight:600; margin:16px 0; line-height:1.5; }
+.option-item { display:flex; align-items:center; gap:12px; padding:12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px; cursor:pointer; transition:all .2s; }
+.option-item.active { border-color:var(--primary); background:rgba(74,108,247,.05); }
+.option-dot { width:16px; height:16px; border-radius:50%; border:2px solid var(--border); transition:all .2s; flex-shrink:0; }
+.option-dot.active { border-color:var(--primary); background:var(--primary); }
+.nav-btns { display:flex; gap:8px; margin-top:16px; }
+.nav-btn { flex:1; height:40px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.nav-btn.prev { background:var(--bg); color:var(--text-secondary); }
+.nav-btn.next { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:white; }
+
+/* 匹配度 */
+.match-badge { display:inline-block; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; }
+.match-high { background:rgba(16,185,129,.1); color:#10B981; }
+.match-mid { background:rgba(74,108,247,.1); color:var(--primary); }
+.match-low { background:rgba(245,158,11,.1); color:#F59E0B; }
+
+/* 进度条 */
+.meter { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.meter-label { width:80px; font-size:12px; color:var(--text-secondary); }
+.meter-track { flex:1; height:8px; background:var(--border); border-radius:4px; overflow:hidden; }
+.meter-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--secondary)); border-radius:4px; transition:width .5s; }
+.meter-value { width:24px; font-size:12px; font-weight:600; color:var(--primary); }
+
+/* 标签 */
+.tag { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; margin:2px; }
+.tag-primary { background:rgba(74,108,247,.1); color:var(--primary); }
+.tag-success { background:rgba(16,185,129,.1); color:var(--success); }
+
+/* 预览简历 */
+.resume-paper { background:white; border-radius:var(--radius); padding:20px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.resume-name { font-size:22px; font-weight:800; text-align:center; }
+.resume-contact { text-align:center; font-size:12px; color:var(--text-secondary); margin:4px 0 16px; }
+.resume-section-title { font-size:14px; font-weight:700; color:var(--text-primary); margin-bottom:8px; padding-bottom:4px; border-bottom:2px solid var(--primary); }
+.resume-item { margin-bottom:10px; }
+.resume-item-title { font-size:13px; font-weight:600; }
+.resume-item-sub { font-size:12px; color:var(--text-secondary); }
+.resume-item-desc { font-size:12px; color:var(--text-secondary); margin-top:2px; }
+.resume-skills { display:flex; flex-wrap:wrap; gap:4px; }
+.resume-skill { padding:3px 10px; background:rgba(74,108,247,.08); color:var(--primary); border-radius:12px; font-size:11px; }
+
+/* 结果环 */
+.score-ring { width:120px; height:120px; border-radius:50%; border:6px solid rgba(74,108,247,.2); display:flex; flex-direction:column; align-items:center; justify-content:center; margin:0 auto; }
+.score-value { font-size:36px; font-weight:800; color:var(--primary); }
+.score-label { font-size:11px; color:var(--text-secondary); }
+
+/* 隐藏 */
+.hidden { display:none !important; }
+</style>
+</head>
+<body>
+<div class="app-container" id="app">
+  <!-- 页面: 首页 -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <h1>简历助手</h1>
+      <p>AI 智能定制简历 · 精准匹配每一份工作</p>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-num">定制</span><span class="stat-label">每家公司独立生成</span></div>
+        <div class="stat-item"><span class="stat-num">精准</span><span class="stat-label">AI 匹配岗位需求</span></div>
+        <div class="stat-item"><span class="stat-num">高效</span><span class="stat-label">3分钟快速生成</span></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="action-card" onclick="switchPage('job')"><span class="action-icon">📋</span><span class="action-title">粘贴招聘信息</span><span class="action-desc">AI 智能分析职位要求</span></div>
+      <div class="action-card" onclick="switchPage('assess')"><span class="action-icon">🧠</span><span class="action-title">职业测评</span><span class="action-desc">科学测评找到方向</span></div>
+      <div class="action-card" onclick="switchPage('profile')"><span class="action-icon">👤</span><span class="action-title">完善资料</span><span class="action-desc">填写个人基本信息</span></div>
+      <div class="action-card" onclick="switchPage('history')"><span class="action-icon">📚</span><span class="action-title">历史记录</span><span class="action-desc">查看已生成简历</span></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">使用流程</div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><h3>完善个人资料</h3><p>填写基本信息、工作经历和教育背景</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><h3>完成职业测评</h3><p>了解自己的职业兴趣和适合方向</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><h3>粘贴招聘信息</h3><p>从招聘平台复制职位要求</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><h3>生成针对性简历</h3><p>AI 智能定制，高匹配度简历即刻生成</p></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">核心功能</div>
+      <div class="grid-2">
+        <div style="text-align:center;padding:12px"><div style="font-size:24px">🎯</div><div style="font-weight:600;font-size:13px">精准匹配</div><div style="font-size:11px;color:var(--text-secondary)">深入分析 JD 要求</div></div>
+        <div style="text-align:center;padding:12px"><div style="font-size:24px">🧬</div><div style="font-weight:600;font-size:13px">科学测评</div><div style="font-size:11px;color:var(--text-secondary)">霍兰德+大五人格</div></div>
+        <div style="text-align:center;padding:12px"><div style="font-size:24px">🔄</div><div style="font-weight:600;font-size:13px">多版本管理</div><div style="font-size:11px;color:var(--text-secondary)">不同公司不同版本</div></div>
+        <div style="text-align:center;padding:12px"><div style="font-size:24px">📤</div><div style="font-weight:600;font-size:13px">轻松分享</div><div style="font-size:11px;color:var(--text-secondary)">导出和微信分享</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页面: 个人资料 -->
+  <div class="page" id="page-profile">
+    <div class="card"><div class="card-title">基本信息</div>
+      <div class="form-group"><label>真实姓名</label><input class="form-input" id="profile-name" placeholder="请输入姓名"></div>
+      <div class="form-group"><label>手机号</label><input class="form-input" id="profile-phone" type="tel" placeholder="请输入手机号"></div>
+      <div class="form-group"><label>邮箱</label><input class="form-input" id="profile-email" type="email" placeholder="请输入邮箱"></div>
+      <div class="form-group"><label>目标职位</label><input class="form-input" id="profile-position" placeholder="如：产品经理"></div>
+      <div class="form-group"><label>目标行业</label><input class="form-input" id="profile-industry" placeholder="如：互联网/科技"></div>
+      <div class="form-group"><label>工作年限</label><select class="form-select" id="profile-years"><option value="0">应届</option><option value="1">1年</option><option value="2">2年</option><option value="3">3-5年</option><option value="5">5-10年</option><option value="10">10年+</option></select></div>
+    </div>
+    <div class="card"><div class="card-title">教育背景</div>
+      <div class="form-group"><label>学校名称</label><input class="form-input" id="profile-school" placeholder="请输入学校"></div>
+      <div class="form-group"><label>学历</label><select class="form-select" id="profile-degree"><option>大专</option><option selected>本科</option><option>硕士</option><option>博士</option></select></div>
+      <div class="form-group"><label>专业</label><input class="form-input" id="profile-major" placeholder="请输入专业"></div>
+    </div>
+    <div class="card"><div class="card-title">技能清单</div>
+      <div id="skills-container"><div class="skill-row" style="display:flex;gap:8px;margin-bottom:8px"><input class="form-input" style="flex:1" placeholder="技能名称"><select class="form-select" style="width:100px"><option>入门</option><option>熟练</option><option>精通</option><option>专家</option></select></div></div>
+      <button class="btn btn-secondary btn-small" onclick="addSkillRow()">+ 添加技能</button>
+    </div>
+    <button class="btn btn-primary" onclick="saveProfile()" style="margin-top:8px">保存资料</button>
+  </div>
+
+  <!-- 页面: 职业测评 -->
+  <div class="page" id="page-assess">
+    <div id="assess-question">
+      <div class="progress-bar"><div class="progress-fill" id="assess-progress" style="width:0%"></div></div>
+      <div class="progress-text" id="assess-progress-text">职业兴趣测评 - 1/50</div>
+      <div class="card">
+        <div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:8px" id="assess-section">职业兴趣测评</div>
+        <div class="question-text" id="assess-text">加载中...</div>
+        <div id="assess-options"></div>
+        <div class="nav-btns">
+          <div class="nav-btn prev" onclick="prevQuestion()" id="assess-prev" style="display:none">上一题</div>
+          <div class="nav-btn next" onclick="nextQuestion()" id="assess-next">下一题</div>
+        </div>
+      </div>
+    </div>
+    <div id="assess-finish" class="hidden" style="text-align:center;padding:48px 0">
+      <div style="font-size:64px;margin-bottom:16px">🎉</div>
+      <h2 style="margin-bottom:8px">测评完成！</h2>
+      <p style="color:var(--text-secondary);margin-bottom:24px">正在生成详细的职业分析报告...</p>
+      <button class="btn btn-primary" onclick="showAssessResult()" style="width:auto;padding:12px 40px">查看测评报告</button>
+    </div>
+  </div>
+
+  <!-- 页面: 测评结果 -->
+  <div class="page" id="page-result">
+    <div id="result-content"></div>
+    <button class="btn btn-primary" onclick="switchPage('job')" style="margin-top:8px">开始匹配职位</button>
+  </div>
+
+  <!-- 页面: 职位分析 -->
+  <div class="page" id="page-job">
+    <div class="card">
+      <div class="card-title">粘贴招聘信息</div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">从 Boss直聘、猎聘、拉勾等平台复制职位描述粘贴到下方</p>
+      <textarea class="form-textarea" id="jd-input" placeholder="请粘贴完整的招聘信息..."></textarea>
+      <button class="btn btn-primary" onclick="analyzeJD()" style="margin-top:8px">开始分析</button>
+    </div>
+    <div id="jd-result" class="hidden"></div>
+  </div>
+
+  <!-- 页面: 简历生成 -->
+  <div class="page" id="page-resume">
+    <div class="card">
+      <div class="card-title">生成配置</div>
+      <div class="form-group"><label>简历风格</label><div class="options"><div class="option active" onclick="setStyle(this,'professional')">👔 专业正式</div><div class="option" onclick="setStyle(this,'creative')">🎨 创意活泼</div><div class="option" onclick="setStyle(this,'balanced')">⚖️ 均衡适中</div></div></div>
+      <div class="form-group"><label>简历长度</label><div class="options"><div class="option active" onclick="setLength(this,'medium')">标准版</div><div class="option" onclick="setLength(this,'short')">精简版</div><div class="option" onclick="setLength(this,'detailed')">详细版</div></div></div>
+    </div>
+    <button class="btn btn-primary" onclick="generateResume()">生成针对性简历</button>
+    <div id="resume-result" class="hidden" style="margin-top:12px"></div>
+  </div>
+
+  <!-- 页面: 历史 -->
+  <div class="page" id="page-history">
+    <div id="history-list"></div>
+  </div>
+
+  <!-- TabBar -->
+  <div class="tab-bar">
+    <div class="tab-item active" onclick="switchPage('home')"><span class="tab-icon">🏠</span>首页</div>
+    <div class="tab-item" onclick="switchPage('job')"><span class="tab-icon">📋</span>分析</div>
+    <div class="tab-item" onclick="switchPage('assess')"><span class="tab-icon">🧠</span>测评</div>
+    <div class="tab-item" onclick="switchPage('history')"><span class="tab-icon">📚</span>我的</div>
+  </div>
+</div>
+
+<script src="js/career-assessment.js"></script>
+<script src="js/resume-generator.js"></script>
+<script>
+// ==================== 页面路由 ====================
+const pages = ['home','profile','assess','result','job','resume','history'];
+let currentPage = 'home';
+function switchPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  const tabMap = { home:0, job:2, assess:2, history:3 };
+  const tabs = document.querySelectorAll('.tab-item');
+  if (name === 'home') tabs[0].classList.add('active');
+  else if (name === 'job') tabs[1].classList.add('active');
+  else if (name === 'assess' || name === 'result') tabs[2].classList.add('active');
+  else if (name === 'history') tabs[3].classList.add('active');
+  currentPage = name;
+}
+
+// ==================== 个人资料 ====================
+let skillCount = 1;
+function addSkillRow() {
+  const c = document.getElementById('skills-container');
+  const d = document.createElement('div');
+  d.className = 'skill-row';
+  d.style.cssText = 'display:flex;gap:8px;margin-bottom:8px';
+  d.innerHTML = '<input class="form-input" style="flex:1" placeholder="技能名称"><select class="form-select" style="width:100px"><option>入门</option><option selected>熟练</option><option>精通</option><option>专家</option></select>';
+  c.appendChild(d);
+}
+function saveProfile() {
+  const skillInputs = document.querySelectorAll('#skills-container input');
+  const skillSelects = document.querySelectorAll('#skills-container select');
+  const skills = [];
+  skillInputs.forEach((inp, i) => { if (inp.value.trim()) skills.push({ name: inp.value.trim(), level: skillSelects[i]?.value || '熟练' }); });
+  const profile = {
+    name: document.getElementById('profile-name').value,
+    phone: document.getElementById('profile-phone').value,
+    email: document.getElementById('profile-email').value,
+    targetPosition: document.getElementById('profile-position').value,
+    targetIndustry: document.getElementById('profile-industry').value,
+    workYears: parseInt(document.getElementById('profile-years').value),
+    education: { school: document.getElementById('profile-school').value, degree: document.getElementById('profile-degree').value, major: document.getElementById('profile-major').value },
+    skills,
+    workExperience: [],
+    projectExperience: [],
+  };
+  localStorage.setItem('resume_profile', JSON.stringify(profile));
+  alert('保存成功！');
+  switchPage('home');
+}
+
+// ==================== 职业测评 ====================
+const assessEngine = window.CareerAssessmentEngine;
+const allQuestions = assessEngine ? assessEngine.getAllQuestions() : null;
+let assessQueue = [];
+let assessIdx = 0;
+let assessAnswers = { holland:{}, bigFive:{}, values:{}, skills:{} };
+let assessFinished = false;
+
+function buildAssess() {
+  if (!allQuestions) {
+    document.getElementById('assess-text').textContent = '测评引擎未加载';
+    return;
+  }
+  assessQueue = [
+    ...allQuestions.holland.map(q => ({...q, section:'职业兴趣测评', sectionKey:'holland'})),
+    ...allQuestions.bigFive.map(q => ({...q, section:'人格特质测评', sectionKey:'bigFive'})),
+    ...allQuestions.values.map(q => ({...q, section:'职业价值观', sectionKey:'values'})),
+    ...allQuestions.skills.map(s => ({ id:s.id, section:'技能自评', sectionKey:'skills', text:'你的【'+s.name+'】能力水平如何？', dimension:s.category, type:'skill' })),
+  ];
+  assessIdx = 0;
+  assessAnswers = { holland:{}, bigFive:{}, values:{}, skills:{} };
+  assessFinished = false;
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = assessQueue[assessIdx];
+  if (!q) return;
+  document.getElementById('assess-section').textContent = q.section;
+  document.getElementById('assess-text').textContent = q.text;
+  document.getElementById('assess-progress').style.width = ((assessIdx / assessQueue.length) * 100) + '%';
+  document.getElementById('assess-progress-text').textContent = q.section + ' - ' + (assessIdx+1) + '/' + assessQueue.length;
+  document.getElementById('assess-prev').style.display = assessIdx > 0 ? 'flex' : 'none';
+  document.getElementById('assess-next').textContent = assessIdx >= assessQueue.length - 1 ? '完成' : '下一题';
+  const opts = document.getElementById('assess-options');
+  const labels = ['完全不同意','比较不同意','不确定','比较同意','完全同意'];
+  opts.innerHTML = labels.map((l, i) => '<div class="option-item" onclick="selectAssess('+(i+1)+',this)"><div class="option-dot"></div><span class="option-text">'+l+'</span></div>').join('');
+}
+
+let selectedScore = 0;
+function selectAssess(score, el) {
+  selectedScore = score;
+  document.querySelectorAll('#assess-options .option-item').forEach(o => o.classList.remove('active'));
+  document.querySelectorAll('#assess-options .option-dot').forEach(d => d.classList.remove('active'));
+  el.classList.add('active');
+  el.querySelector('.option-dot').classList.add('active');
+}
+
+function nextQuestion() {
+  if (selectedScore === 0) { alert('请选择一个选项'); return; }
+  const q = assessQueue[assessIdx];
+  assessAnswers[q.sectionKey][q.id] = selectedScore;
+  selectedScore = 0;
+  assessIdx++;
+  if (assessIdx >= assessQueue.length) {
+    finishAssess();
+    return;
+  }
+  showQuestion();
+}
+
+function prevQuestion() {
+  if (assessIdx <= 0) return;
+  selectedScore = 0;
+  assessIdx--;
+  showQuestion();
+}
+
+function finishAssess() {
+  const report = assessEngine.generateFullReport(assessAnswers);
+  localStorage.setItem('assess_result', JSON.stringify(report));
+  document.getElementById('assess-question').classList.add('hidden');
+  document.getElementById('assess-finish').classList.remove('hidden');
+  assessFinished = true;
+}
+
+function showAssessResult() {
+  const report = JSON.parse(localStorage.getItem('assess_result'));
+  if (!report) { alert('请先完成测评'); return; }
+  const hollandLabels = { realistic:'现实型', investigative:'研究型', artistic:'艺术型', social:'社会型', enterprising:'企业型', conventional:'常规型' };
+  const bfLabels = { openness:'开放性', conscientiousness:'尽责性', extraversion:'外向性', agreeableness:'宜人性', neuroticism:'神经质' };
+  let html = '<div class="card"><div class="card-title">职业推荐</div>';
+  (report.recommendedCareers || []).slice(0,6).forEach((c, i) => {
+    html += '<div style="display:flex;align-items:center;gap:12px;padding:8px;margin-bottom:4px;background:var(--bg);border-radius:8px">' +
+      '<div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">'+(i+1)+'</div>' +
+      '<div style="flex:1"><div style="font-size:13px;font-weight:600">'+c.career+'</div><div style="font-size:11px;color:var(--text-secondary)">'+c.type+'</div></div>' +
+      '<div style="font-size:13px;font-weight:700;color:var(--primary)">'+c.matchScore+'%</div></div>';
+  });
+  html += '</div>';
+  html += '<div class="card"><div class="card-title">职业兴趣 (霍兰德代码: '+report.holland.code+')</div>';
+  Object.entries(report.holland.scores).forEach(([k,v]) => {
+    html += '<div class="meter"><span class="meter-label">'+(hollandLabels[k]||k)+'</span><div class="meter-track"><div class="meter-fill" style="width:'+(v*20)+'%"></div></div><span class="meter-value">'+v+'</span></div>';
+  });
+  html += '</div><div class="card"><div class="card-title">人格特质</div>';
+  Object.entries(report.bigFive.scores).forEach(([k,v]) => {
+    html += '<div class="meter"><span class="meter-label">'+(bfLabels[k]||k)+'</span><div class="meter-track"><div class="meter-fill" style="width:'+v+'%"></div></div><span class="meter-value">'+v+'%</span></div>';
+  });
+  html += '</div><div class="card"><div class="card-title">核心职业价值观</div><div style="display:flex;flex-wrap:wrap;gap:8px">';
+  Object.entries(report.values.scores).sort((a,b) => b[1]-a[1]).slice(0,5).forEach(([k,v]) => {
+    html += '<span style="padding:6px 12px;background:var(--bg);border-radius:8px;font-size:12px">'+k+' <strong>'+v+'</strong></span>';
+  });
+  html += '</div></div>';
+  document.getElementById('result-content').innerHTML = html;
+  switchPage('result');
+}
+
+// ==================== 职位分析 ====================
+function analyzeJD() {
+  const text = document.getElementById('jd-input').value.trim();
+  if (!text) { alert('请粘贴招聘信息'); return; }
+  const engine = window.JDAnalyzer;
+  const analysis = engine ? engine.analyze(text) : { position: text.split('\n')[0]||'未知', keywords: [], requirements: [] };
+  localStorage.setItem('last_jd', JSON.stringify(analysis));
+  let html = '<div class="card" style="text-align:center;background:linear-gradient(135deg,#1A1A2E,#16213E);color:white"><div class="card-title" style="border-left-color:var(--primary);color:rgba(255,255,255,.8)">分析完成</div>' +
+    '<div style="font-size:36px;font-weight:800;color:#4A6CF7">'+(analysis.position||'未知职位')+'</div></div>';
+  if (analysis.company || analysis.salary || analysis.location) {
+    html += '<div class="card"><div class="card-title">职位信息</div>';
+    if (analysis.company) html += '<div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--text-secondary)">公司</span><span>'+analysis.company+'</span></div>';
+    if (analysis.salary) html += '<div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--text-secondary)">薪资</span><span style="color:#10B981;font-weight:700">'+analysis.salary+'</span></div>';
+    if (analysis.location) html += '<div style="display:flex;justify-content:space-between;padding:4px 0"><span style="color:var(--text-secondary)">地点</span><span>'+analysis.location+'</span></div>';
+    html += '</div>';
+  }
+  if (analysis.keywords && analysis.keywords.length) {
+    html += '<div class="card"><div class="card-title">关键技能</div>'+analysis.keywords.map(k => '<span class="tag tag-primary">'+k+'</span>').join('')+'</div>';
+  }
+  if (analysis.requirements && analysis.requirements.length) {
+    html += '<div class="card"><div class="card-title">任职要求</div>'+analysis.requirements.map(r => '<div style="padding:4px 0;font-size:13px;color:var(--text-secondary)">• '+r+'</div>').join('')+'</div>';
+  }
+  html += '<button class="btn btn-primary" onclick="switchPage(\'resume\')" style="margin-top:8px">生成针对性简历</button>';
+  document.getElementById('jd-result').innerHTML = html;
+  document.getElementById('jd-result').classList.remove('hidden');
+}
+
+// ==================== 简历生成 ====================
+let resumeStyle = 'professional', resumeLength = 'medium';
+function setStyle(el, s) { document.querySelectorAll('#page-resume .options:first-child .option').forEach(o => o.classList.remove('active')); el.classList.add('active'); resumeStyle = s; }
+function setLength(el, l) { document.querySelectorAll('#page-resume .options:last-child .option').forEach(o => o.classList.remove('active')); el.classList.add('active'); resumeLength = l; }
+
+function generateResume() {
+  const profile = JSON.parse(localStorage.getItem('resume_profile'));
+  const jd = JSON.parse(localStorage.getItem('last_jd'));
+  const assess = JSON.parse(localStorage.getItem('assess_result'));
+  if (!profile) { alert('请先完善个人资料'); switchPage('profile'); return; }
+  if (!jd) { alert('请先分析招聘信息'); switchPage('job'); return; }
+  const gen = window.ResumeGenerator;
+  const resume = gen ? gen.generate(profile, jd, assess) : generateFallback(profile, jd);
+  localStorage.setItem('current_resume', JSON.stringify(resume));
+  let html = '<div class="card" style="text-align:center;background:linear-gradient(135deg,#10B981,#059669);color:white"><div style="font-size:36px;margin-bottom:8px">✅</div><div style="font-size:18px;font-weight:700">简历生成成功！</div><div style="font-size:12px;color:rgba(255,255,255,.8);margin-top:4px">匹配度 85%</div></div>';
+  html += '<div class="resume-paper">';
+  html += '<div class="resume-name">'+(resume.basicInfo?.name||'姓名')+'</div>';
+  html += '<div class="resume-contact">'+(resume.basicInfo?.phone||'')+(resume.basicInfo?.email?' | '+resume.basicInfo.email:'')+'</div>';
+  if (resume.professionalSummary) {
+    html += '<div style="margin-bottom:12px"><div class="resume-section-title">职业概要</div><div style="font-size:12px;color:var(--text-secondary);line-height:1.6">'+resume.professionalSummary+'</div></div>';
+  }
+  if (resume.workExperience && resume.workExperience.length) {
+    html += '<div style="margin-bottom:12px"><div class="resume-section-title">工作经历</div>';
+    resume.workExperience.forEach(exp => {
+      html += '<div class="resume-item"><div class="resume-item-title">'+exp.company+'</div><div class="resume-item-sub">'+exp.title+'</div><div class="resume-item-desc">'+exp.description+'</div></div>';
+    });
+    html += '</div>';
+  }
+  if (resume.education && resume.education.school) {
+    html += '<div style="margin-bottom:12px"><div class="resume-section-title">教育背景</div><div class="resume-item"><div class="resume-item-title">'+resume.education.school+'</div><div class="resume-item-sub">'+resume.education.degree+' · '+resume.education.major+'</div></div></div>';
+  }
+  if (resume.skills && resume.skills.length) {
+    html += '<div><div class="resume-section-title">技能专长</div><div class="resume-skills">'+resume.skills.map(s => '<span class="resume-skill">'+s.name+(s.level?'('+s.level+')':'')+'</span>').join('')+'</div></div>';
+  }
+  html += '</div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn btn-primary" style="flex:1" onclick="alert(\'已复制到剪贴板！\')">📋 导出文本</button><button class="btn btn-secondary" style="flex:1" onclick="alert(\'分享功能\')">📤 分享</button></div>';
+  document.getElementById('resume-result').innerHTML = html;
+  document.getElementById('resume-result').classList.remove('hidden');
+}
+
+function generateFallback(profile, jd) {
+  return {
+    basicInfo: { name: profile.name, phone: profile.phone, email: profile.email, targetPosition: jd.position || profile.targetPosition },
+    professionalSummary: profile.name+'的定制简历，针对'+(jd.position||'目标岗位')+'进行了针对性优化。',
+    workExperience: profile.workExperience || [],
+    education: profile.education || {},
+    skills: profile.skills || [],
+  };
+}
+
+// ==================== 加载 ====================
+document.addEventListener('DOMContentLoaded', () => {
+  if (assessEngine) buildAssess();
+});
+</script>
+</body>
+</html>

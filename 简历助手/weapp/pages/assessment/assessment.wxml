@@ -1,0 +1,36 @@
+<!-- 职业测评页面 -->
+<view class="page">
+  <!-- 进度指示 -->
+  <view class="progress-bar">
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{progressPercent}}%"></view>
+    </view>
+    <text class="progress-text">{{currentSection}} - {{currentIndex + 1}}/{{totalQuestions}}</text>
+  </view>
+
+  <!-- 题目卡片 -->
+  <view class="question-card" wx:if="{{!isFinished}}">
+    <view class="question-section">{{currentSection}}</view>
+    <view class="question-text">{{currentQuestion.text}}</view>
+    <view class="option-group">
+      <view class="option-item {{item.selected ? 'active' : ''}}" 
+            wx:for="{{options}}" wx:key="index" 
+            bindtap="selectOption" data-score="{{item.score}}">
+        <view class="option-dot {{item.selected ? 'active' : ''}}"></view>
+        <text class="option-text">{{item.label}}</text>
+      </view>
+    </view>
+    <view class="question-nav">
+      <view class="nav-btn" bindtap="prevQuestion" wx:if="{{currentIndex > 0}}">上一题</view>
+      <view class="nav-btn primary" bindtap="nextQuestion">{{isLastPage ? '完成' : '下一题'}}</view>
+    </view>
+  </view>
+
+  <!-- 完成页面 -->
+  <view class="finish-card" wx:if="{{isFinished}}">
+    <view class="finish-icon">🎉</view>
+    <text class="finish-title">测评完成！</text>
+    <text class="finish-desc">我们已经完成了对你的全面评估，正在生成详细的职业分析报告...</text>
+    <view class="btn btn-primary" bindtap="viewResult">查看测评报告</view>
+  </view>
+</view>

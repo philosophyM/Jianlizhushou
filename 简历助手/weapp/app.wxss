@@ -1,0 +1,237 @@
+/* 简历助手 - 全局样式 */
+
+/* 设计系统变量 */
+page {
+  --primary: #4A6CF7;
+  --primary-light: #6B8AFF;
+  --primary-dark: #3451D1;
+  --secondary: #7C3AED;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-tertiary: #9CA3AF;
+  --bg-primary: #F5F7FA;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --border: #E5E7EB;
+  --border-light: #F3F4F6;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 24rpx;
+  --radius-xl: 32rpx;
+  --gap-xs: 8rpx;
+  --gap-sm: 16rpx;
+  --gap-md: 24rpx;
+  --gap-lg: 32rpx;
+  --gap-xl: 48rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+/* 通用容器 */
+.container {
+  padding: var(--gap-md);
+  min-height: 100vh;
+}
+
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--gap-md);
+  margin-bottom: var(--gap-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 按钮系统 */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 48rpx;
+  border-radius: var(--radius-md);
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+}
+
+.btn-primary:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 2rpx solid var(--border);
+}
+
+.btn-large {
+  width: 100%;
+  height: 96rpx;
+  font-size: 32rpx;
+}
+
+.btn-small {
+  padding: 12rpx 32rpx;
+  font-size: 26rpx;
+}
+
+/* 表单样式 */
+.form-group {
+  margin-bottom: var(--gap-md);
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--gap-xs);
+}
+
+.form-input {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 var(--gap-md);
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 28rpx;
+  background: var(--bg-secondary);
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(74,108,247,0.1);
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: var(--gap-md);
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 28rpx;
+  background: var(--bg-secondary);
+  box-sizing: border-box;
+}
+
+/* 排版 */
+.title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--gap-sm);
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-bottom: var(--gap-md);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--gap-md);
+  padding-left: var(--gap-sm);
+  border-left: 6rpx solid var(--primary);
+}
+
+/* 匹配度进度条 */
+.match-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+}
+
+.match-bar-track {
+  flex: 1;
+  height: 12rpx;
+  background: var(--border-light);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.match-bar-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  transition: width 0.5s ease;
+}
+
+.match-bar-label {
+  font-size: 24rpx;
+  font-weight: 600;
+  min-width: 80rpx;
+  text-align: right;
+}
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 6rpx 20rpx;
+  font-size: 22rpx;
+  border-radius: 20rpx;
+  margin: 4rpx;
+}
+
+.tag-primary {
+  background: rgba(74,108,247,0.1);
+  color: var(--primary);
+}
+
+.tag-success {
+  background: rgba(16,185,129,0.1);
+  color: var(--success);
+}
+
+.tag-warning {
+  background: rgba(245,158,11,0.1);
+  color: var(--warning);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gap-xl) 0;
+  color: var(--text-tertiary);
+}
+
+/* 骨架屏 */
+.skeleton {
+  background: linear-gradient(90deg, var(--border-light) 25%, var(--border) 50%, var(--border-light) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}

@@ -1,0 +1,114 @@
+<!-- 职位分析页面 -->
+<view class="page">
+  <view class="container">
+    <view class="hero-text">
+      <text class="hero-title">粘贴招聘信息</text>
+      <text class="hero-desc">从 Boss直聘、猎聘、拉勾等平台复制职位描述粘贴到下方</text>
+    </view>
+
+    <!-- 输入区域 -->
+    <view class="card" wx:if="{{!analyzing && !analyzed}}">
+      <view class="form-group">
+        <text class="form-label">招聘信息</text>
+        <textarea class="jd-input" placeholder="请粘贴完整的招聘信息（职位描述、任职要求等）&#10;&#10;支持从以下平台复制：&#10;· Boss直聘 &#10;· 猎聘 &#10;· 拉勾 &#10;· 智联招聘" 
+                  value="{{jdText}}" bindinput="onJDInput" />
+      </view>
+      <view class="btn btn-primary btn-large" bindtap="analyzeJD">
+        {{jdText.trim() ? '开始分析' : '请先粘贴招聘信息'}}
+      </view>
+    </view>
+
+    <!-- 分析中 -->
+    <view class="analyzing-state" wx:if="{{analyzing}}">
+      <view class="analyzing-animation">
+        <view class="pulse-circle"></view>
+        <view class="pulse-circle delay"></view>
+        <view class="pulse-circle delay2"></view>
+      </view>
+      <text class="analyzing-title">AI 智能分析中...</text>
+      <text class="analyzing-desc">正在解析职位要求、提取关键词、计算匹配度</text>
+    </view>
+
+    <!-- 分析结果 -->
+    <view class="result-area" wx:if="{{analyzed && result}}">
+      <!-- 匹配度卡片 -->
+      <view class="match-card">
+        <text class="match-title">匹配度分析</text>
+        <view class="match-score-ring">
+          <view class="score-ring-bg"></view>
+          <text class="score-ring-value">{{matchScore}}%</text>
+          <text class="score-ring-label">匹配度</text>
+        </view>
+      </view>
+
+      <!-- 职位信息 -->
+      <view class="card">
+        <view class="section-title">职位信息</view>
+        <view class="info-row" wx:if="{{result.position}}">
+          <text class="info-label">职位</text>
+          <text class="info-value">{{result.position}}</text>
+        </view>
+        <view class="info-row" wx:if="{{result.company}}">
+          <text class="info-label">公司</text>
+          <text class="info-value">{{result.company}}</text>
+        </view>
+        <view class="info-row" wx:if="{{result.salary}}">
+          <text class="info-label">薪资</text>
+          <text class="info-value salary">{{result.salary}}</text>
+        </view>
+        <view class="info-row" wx:if="{{result.location}}">
+          <text class="info-label">地点</text>
+          <text class="info-value">{{result.location}}</text>
+        </view>
+      </view>
+
+      <!-- 技能要求 -->
+      <view class="card" wx:if="{{result.keywords && result.keywords.length > 0}}">
+        <view class="section-title">关键技能要求</view>
+        <view class="keywords">
+          <text class="tag tag-primary" wx:for="{{result.keywords}}" wx:key="index">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 任职要求 -->
+      <view class="card" wx:if="{{result.requirements && result.requirements.length > 0}}">
+        <view class="section-title">任职要求</view>
+        <view class="req-list">
+          <view class="req-item" wx:for="{{result.requirements}}" wx:key="index">
+            <text class="req-bullet">•</text>
+            <text class="req-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 职位职责 -->
+      <view class="card" wx:if="{{result.responsibilities && result.responsibilities.length > 0}}">
+        <view class="section-title">岗位职责</view>
+        <view class="req-list">
+          <view class="req-item" wx:for="{{result.responsibilities}}" wx:key="index">
+            <text class="req-bullet">•</text>
+            <text class="req-text">{{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 匹配详情 -->
+      <view class="card" wx:if="{{matchDetails.length > 0}}">
+        <view class="section-title">匹配详情</view>
+        <view class="match-detail-item" wx:for="{{matchDetails}}" wx:key="index">
+          <view class="detail-status {{item.status}}">{{item.status === 'match' ? '✓' : '△'}}</view>
+          <view class="detail-info">
+            <text class="detail-item">{{item.item}}</text>
+            <text class="detail-desc">{{item.detail}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 操作 -->
+      <view class="action-bar">
+        <view class="btn btn-primary" bindtap="goToResume">生成针对性简历</view>
+        <view class="btn btn-secondary" bindtap="resetAnalysis">重新分析</view>
+      </view>
+    </view>
+  </view>
+</view>

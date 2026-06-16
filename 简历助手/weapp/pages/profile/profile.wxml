@@ -1,0 +1,102 @@
+<!-- 个人资料页面 -->
+<view class="page">
+  <view class="container">
+    <!-- 基本信息 -->
+    <view class="card">
+      <view class="section-title">基本信息</view>
+      <view class="form-group">
+        <text class="form-label">真实姓名</text>
+        <input class="form-input" placeholder="请输入真实姓名" value="{{name}}" bindinput="onInput" data-field="name" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">手机号</text>
+        <input class="form-input" type="number" placeholder="请输入手机号" value="{{phone}}" bindinput="onInput" data-field="phone" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">邮箱</text>
+        <input class="form-input" type="email" placeholder="请输入邮箱" value="{{email}}" bindinput="onInput" data-field="email" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">目标职位</text>
+        <input class="form-input" placeholder="如：产品经理" value="{{targetPosition}}" bindinput="onInput" data-field="targetPosition" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">目标行业</text>
+        <input class="form-input" placeholder="如：互联网/科技" value="{{targetIndustry}}" bindinput="onInput" data-field="targetIndustry" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">工作年限</text>
+        <picker mode="selector" range="{{yearRange}}" value="{{workYearsIndex}}" bindchange="onWorkYearsChange">
+          <view class="form-input">{{yearRange[workYearsIndex] || '请选择'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 教育背景 -->
+    <view class="card">
+      <view class="section-title">教育背景</view>
+      <view class="form-group">
+        <text class="form-label">学校名称</text>
+        <input class="form-input" placeholder="请输入学校名称" value="{{education.school}}" bindinput="onEduInput" data-field="school" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">学历</text>
+        <picker mode="selector" range="{{degreeRange}}" value="{{education.degreeIndex}}" bindchange="onDegreeChange">
+          <view class="form-input">{{degreeRange[education.degreeIndex] || '请选择'}}</view>
+        </picker>
+      </view>
+      <view class="form-group">
+        <text class="form-label">专业</text>
+        <input class="form-input" placeholder="请输入专业" value="{{education.major}}" bindinput="onEduInput" data-field="major" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">毕业年份</text>
+        <picker mode="selector" range="{{yearList}}" value="{{education.yearIndex}}" bindchange="onGradYearChange">
+          <view class="form-input">{{yearList[education.yearIndex] || '请选择'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 工作经历 -->
+    <view class="card">
+      <view class="section-title">工作经历</view>
+      <view wx:for="{{workExperience}}" wx:key="index" class="exp-item">
+        <view class="exp-header">
+          <text class="exp-label">第{{index+1}}段经历</text>
+          <text class="exp-delete" bindtap="removeWorkExp" data-index="{{index}}">删除</text>
+        </view>
+        <view class="form-group">
+          <text class="form-label">公司名称</text>
+          <input class="form-input" placeholder="公司名称" value="{{item.company}}" bindinput="onWorkExpInput" data-index="{{index}}" data-field="company" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">职位</text>
+          <input class="form-input" placeholder="职位名称" value="{{item.title}}" bindinput="onWorkExpInput" data-index="{{index}}" data-field="title" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">工作描述</text>
+          <textarea class="form-textarea" placeholder="描述你的工作内容和成果" value="{{item.description}}" bindinput="onWorkExpInput" data-index="{{index}}" data-field="description" />
+        </view>
+      </view>
+      <view class="btn btn-secondary btn-small" bindtap="addWorkExp">+ 添加工作经历</view>
+    </view>
+
+    <!-- 技能清单 -->
+    <view class="card">
+      <view class="section-title">技能清单</view>
+      <view wx:for="{{skills}}" wx:key="index" class="skill-item">
+        <view class="skill-row">
+          <input class="form-input" style="flex:1; margin-right: 16rpx;" placeholder="技能名称" value="{{item.name}}" bindinput="onSkillInput" data-index="{{index}}" data-field="name" />
+          <picker mode="selector" range="{{skillLevels}}" value="{{item.levelIndex}}" bindchange="onSkillLevelChange" data-index="{{index}}">
+            <view class="form-input" style="width:160rpx;">{{skillLevels[item.levelIndex] || '水平'}}</view>
+          </picker>
+          <text class="skill-delete" bindtap="removeSkill" data-index="{{index}}">✕</text>
+        </view>
+      </view>
+      <view class="btn btn-secondary btn-small" bindtap="addSkill">+ 添加技能</view>
+    </view>
+
+    <!-- 保存按钮 -->
+    <view class="btn btn-primary btn-large" bindtap="saveProfile">保存资料</view>
+  </view>
+</view>

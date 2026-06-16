@@ -1,0 +1,33 @@
+.page { padding-bottom: 120rpx; }
+.container { padding: var(--gap-md); }
+
+.exp-item {
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+  padding: var(--gap-md);
+  margin-bottom: var(--gap-sm);
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--gap-sm);
+}
+
+.exp-label { font-size: 26rpx; font-weight: 600; color: var(--text-primary); }
+.exp-delete { font-size: 24rpx; color: var(--danger); padding: 8rpx; }
+.skill-item { margin-bottom: var(--gap-sm); }
+.skill-row { display: flex; align-items: center; gap: 16rpx; }
+.skill-delete { color: var(--danger); font-size: 28rpx; padding: 8rpx; }
+.form-group { margin-bottom: var(--gap-md); }
+.form-label { display: block; font-size: 28rpx; font-weight: 500; color: var(--text-primary); margin-bottom: var(--gap-xs); }
+.form-input { width: 100%; height: 88rpx; padding: 0 var(--gap-md); border: 2rpx solid var(--border); border-radius: var(--radius-md); font-size: 28rpx; background: var(--bg-secondary); box-sizing: border-box; }
+.form-textarea { width: 100%; min-height: 200rpx; padding: var(--gap-md); border: 2rpx solid var(--border); border-radius: var(--radius-md); font-size: 28rpx; background: var(--bg-secondary); box-sizing: border-box; }
+.btn { display: flex; align-items: center; justify-content: center; border-radius: var(--radius-md); font-size: 30rpx; font-weight: 600; border: none; cursor: pointer; }
+.btn-primary { background: linear-gradient(135deg, #4A6CF7, #3451D1); color: white; }
+.btn-large { width: 100%; height: 96rpx; font-size: 32rpx; margin-top: var(--gap-lg); }
+.btn-secondary { background: var(--bg-primary); color: var(--text-primary); border: 2rpx solid var(--border); }
+.btn-small { padding: 12rpx 32rpx; font-size: 26rpx; margin-top: var(--gap-sm); }
+.section-title { font-size: 32rpx; font-weight: 600; color: var(--text-primary); margin-bottom: var(--gap-md); padding-left: var(--gap-sm); border-left: 6rpx solid #4A6CF7; }
+.card { background: white; border-radius: 16rpx; padding: var(--gap-md); margin-bottom: var(--gap-md); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }

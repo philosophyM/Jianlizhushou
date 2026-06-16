@@ -1,0 +1,77 @@
+<!-- 测评结果页面 -->
+<view class="page">
+  <view class="result-header">
+    <text class="result-title">测评报告</text>
+    <text class="result-subtitle">{{report.summary.brief || '基于霍兰德、大五人格等科学测评'}}</text>
+  </view>
+
+  <!-- 核心推荐 -->
+  <view class="card">
+    <view class="section-title">职业推荐</view>
+    <view class="recommend-list">
+      <view class="recommend-item" wx:for="{{report.recommendedCareers}}" wx:key="index" wx:for-index="i" wx:for-item="item" wx:if="{{i < 6}}">
+        <view class="recommend-rank">{{i + 1}}</view>
+        <view class="recommend-info">
+          <text class="recommend-career">{{item.career}}</text>
+          <text class="recommend-type">{{item.type}}</text>
+        </view>
+        <view class="recommend-score">
+          <text class="score-num">{{item.matchScore}}%</text>
+          <view class="score-bar">
+            <view class="score-fill" style="width:{{item.matchScore}}%"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 霍兰德结果 -->
+  <view class="card">
+    <view class="section-title">职业兴趣类型</view>
+    <view class="holland-chart">
+      <view class="holland-bar" wx:for="{{hollandList}}" wx:key="index">
+        <text class="holland-label">{{item.label}}</text>
+        <view class="holland-track">
+          <view class="holland-fill" style="width:{{item.score * 20}}%"></view>
+        </view>
+        <text class="holland-score">{{item.score}}</text>
+      </view>
+    </view>
+    <view class="holland-code">
+      <text class="code-label">你的霍兰德代码：</text>
+      <text class="code-value">{{report.holland.code}}</text>
+    </view>
+  </view>
+
+  <!-- 大五人格 -->
+  <view class="card">
+    <view class="section-title">人格特质</view>
+    <view class="bigfive-list">
+      <view class="bigfive-item" wx:for="{{bigFiveList}}" wx:key="index">
+        <view class="bigfive-header">
+          <text class="bigfive-name">{{item.name}}</text>
+          <text class="bigfive-desc">{{item.desc}}</text>
+        </view>
+        <view class="bigfive-track">
+          <view class="bigfive-fill" style="width:{{item.score}}%"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 职业价值观 -->
+  <view class="card">
+    <view class="section-title">核心职业价值观</view>
+    <view class="values-list">
+      <view class="value-item" wx:for="{{valueList}}" wx:key="index" wx:if="{{index < 5}}">
+        <text class="value-name">{{item.label}}</text>
+        <text class="value-tag">{{item.score >= 4 ? '核心' : item.score >= 3 ? '重要' : '一般'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="action-bar">
+    <view class="btn btn-primary" bindtap="goToJobAnalysis">开始匹配职位</view>
+    <view class="btn btn-secondary" bindtap="goToHome">返回首页</view>
+  </view>
+</view>

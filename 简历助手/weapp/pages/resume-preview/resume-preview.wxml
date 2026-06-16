@@ -1,0 +1,83 @@
+<!-- 简历预览页面 -->
+<view class="page">
+  <view class="resume-container" wx:if="{{resume}}">
+    <!-- 简历头部 -->
+    <view class="resume-header">
+      <text class="resume-name">{{resume.basicInfo.name || '姓名'}}</text>
+      <view class="resume-contact">
+        <text wx:if="{{resume.basicInfo.phone}}">{{resume.basicInfo.phone}}</text>
+        <text wx:if="{{resume.basicInfo.email}}"> | {{resume.basicInfo.email}}</text>
+        <text wx:if="{{resume.basicInfo.location}}"> | {{resume.basicInfo.location}}</text>
+      </view>
+      <view class="resume-target">
+        <text>目标职位：{{resume.basicInfo.targetPosition || ''}}</text>
+        <text>工作年限：{{resume.basicInfo.workYears || 0}}年</text>
+      </view>
+    </view>
+
+    <!-- 职业概要 -->
+    <view class="resume-section">
+      <text class="resume-section-title">职业概要</text>
+      <text class="resume-summary">{{resume.professionalSummary}}</text>
+    </view>
+
+    <!-- 工作经历 -->
+    <view class="resume-section" wx:if="{{resume.workExperience && resume.workExperience.length > 0}}">
+      <text class="resume-section-title">工作经历</text>
+      <view class="resume-exp" wx:for="{{resume.workExperience}}" wx:key="index">
+        <view class="exp-header">
+          <text class="exp-company">{{item.company}}</text>
+          <text class="exp-title">{{item.title}}</text>
+        </view>
+        <text class="exp-desc">{{item.description}}</text>
+      </view>
+    </view>
+
+    <!-- 项目经验 -->
+    <view class="resume-section" wx:if="{{resume.projectExperience && resume.projectExperience.length > 0}}">
+      <text class="resume-section-title">项目经验</text>
+      <view class="resume-project" wx:for="{{resume.projectExperience}}" wx:key="index">
+        <text class="project-name">{{item.name}}</text>
+        <text class="project-role">{{item.role}}</text>
+        <text class="project-desc">{{item.description}}</text>
+      </view>
+    </view>
+
+    <!-- 教育背景 -->
+    <view class="resume-section" wx:if="{{resume.education && resume.education.school}}">
+      <text class="resume-section-title">教育背景</text>
+      <view class="resume-edu">
+        <text class="edu-school">{{resume.education.school}}</text>
+        <text class="edu-detail">{{resume.education.degree}} · {{resume.education.major}} · {{resume.education.graduationYear}}</text>
+      </view>
+    </view>
+
+    <!-- 技能清单 -->
+    <view class="resume-section" wx:if="{{resume.skills && resume.skills.length > 0}}">
+      <text class="resume-section-title">技能专长</text>
+      <view class="resume-skills">
+        <text class="resume-skill" wx:for="{{resume.skills}}" wx:key="index">
+          {{item.name}}<text wx:if="{{item.level}}"> ({{item.level}})</text>
+        </text>
+      </view>
+    </view>
+
+    <!-- 匹配度标签 -->
+    <view class="resume-tags" wx:if="{{matchTags.length > 0}}">
+      <text class="tag tag-success" wx:for="{{matchTags}}" wx:key="index">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <text class="empty-title">暂无简历</text>
+    <text class="empty-desc">请先生成一份针对性简历</text>
+    <view class="btn btn-primary" bindtap="goToGenerate">去生成</view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="bottom-bar" wx:if="{{resume}}">
+    <view class="btn btn-secondary" bindtap="exportText">导出文本</view>
+    <view class="btn btn-primary" bindtap="shareResume">分享简历</view>
+  </view>
+</view>

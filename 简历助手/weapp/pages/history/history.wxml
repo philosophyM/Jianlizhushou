@@ -1,0 +1,75 @@
+<!-- 我的页面 / 历史记录 -->
+<view class="page">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-avatar">
+      <text class="avatar-placeholder">{{userInitial}}</text>
+    </view>
+    <view class="user-info">
+      <text class="user-name">{{userName || '未设置姓名'}}</text>
+      <text class="user-status">{{hasProfile ? '资料已完善' : '点击完善个人资料'}}</text>
+    </view>
+    <view class="user-arrow" bindtap="goToProfile">›</view>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="stats-grid">
+    <view class="stats-card">
+      <text class="stats-num">{{historyList.length}}</text>
+      <text class="stats-label">生成简历</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-num">{{assessmentDone ? '1' : '0'}}</text>
+      <text class="stats-label">完成测评</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-num">{{profileDone ? '1' : '0'}}</text>
+      <text class="stats-label">完善资料</text>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="menu-list">
+    <view class="menu-item" bindtap="goToAssessment">
+      <text class="menu-icon">🧠</text>
+      <text class="menu-label">{{assessmentDone ? '查看测评报告' : '职业测评'}}</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToJobAnalysis">
+      <text class="menu-icon">📋</text>
+      <text class="menu-label">粘贴招聘信息</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToProfile">
+      <text class="menu-icon">👤</text>
+      <text class="menu-label">个人资料</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 历史简历 -->
+  <view class="history-section">
+    <view class="section-title">历史记录</view>
+    
+    <view class="history-list" wx:if="{{historyList.length > 0}}">
+      <view class="history-item" wx:for="{{historyList}}" wx:key="id" bindtap="viewResume" data-id="{{item.id}}">
+        <view class="history-info">
+          <text class="history-position">{{item.position || '未知职位'}}</text>
+          <text class="history-company" wx:if="{{item.company}}">{{item.company}}</text>
+          <text class="history-date">{{item.timestamp}}</text>
+        </view>
+        <view class="history-match">
+          <view class="match-badge {{item.matchScore >= 80 ? 'high' : item.matchScore >= 60 ? 'mid' : 'low'}}">
+            {{item.matchScore || 0}}%
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:else>
+      <text class="empty-text">暂无历史记录</text>
+      <text class="empty-hint">开始生成第一份针对性简历吧</text>
+      <view class="btn btn-primary" bindtap="goToJobAnalysis">开始分析职位</view>
+    </view>
+  </view>
+</view>

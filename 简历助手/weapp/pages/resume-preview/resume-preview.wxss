@@ -1,0 +1,59 @@
+.page { padding-bottom: 160rpx; background: #F0F2F5; }
+.resume-container { padding: var(--gap-md); max-width: 750rpx; margin: 0 auto; }
+
+/* 简历主题样式 */
+.resume-header { background: white; border-radius: var(--radius-lg); padding: var(--gap-lg); text-align: center; margin-bottom: var(--gap-md); box-shadow: var(--shadow-md); }
+.resume-name { font-size: 48rpx; font-weight: 800; color: var(--text-primary); display: block; margin-bottom: 8rpx; }
+.resume-contact { font-size: 24rpx; color: var(--text-secondary); margin-bottom: var(--gap-sm); }
+.resume-target { font-size: 24rpx; color: var(--text-tertiary); }
+
+.resume-section { background: white; border-radius: var(--radius-md); padding: var(--gap-md); margin-bottom: var(--gap-md); box-shadow: var(--shadow-sm); }
+.resume-section-title { font-size: 30rpx; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: var(--gap-md); padding-bottom: var(--gap-sm); border-bottom: 2rpx solid #4A6CF7; }
+
+.resume-summary { font-size: 26rpx; color: var(--text-secondary); line-height: 1.8; }
+
+.resume-exp { margin-bottom: var(--gap-md); }
+.resume-exp:last-child { margin-bottom: 0; }
+.exp-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8rpx; }
+.exp-company { font-size: 28rpx; font-weight: 600; color: var(--text-primary); }
+.exp-title { font-size: 24rpx; color: var(--primary); }
+.exp-desc { font-size: 24rpx; color: var(--text-tertiary); line-height: 1.6; }
+
+.resume-project { margin-bottom: var(--gap-sm); }
+.project-name { font-size: 26rpx; font-weight: 600; color: var(--text-primary); display: block; }
+.project-role { font-size: 22rpx; color: var(--text-secondary); display: block; }
+.project-desc { font-size: 24rpx; color: var(--text-tertiary); }
+
+.resume-edu { }
+.edu-school { font-size: 28rpx; font-weight: 600; color: var(--text-primary); display: block; }
+.edu-detail { font-size: 24rpx; color: var(--text-secondary); }
+
+.resume-skills { display: flex; flex-wrap: wrap; gap: var(--gap-sm); }
+.resume-skill { background: rgba(74,108,247,0.08); color: #4A6CF7; padding: 8rpx 24rpx; border-radius: 20rpx; font-size: 24rpx; }
+
+.resume-tags { display: flex; flex-wrap: wrap; gap: var(--gap-xs); justify-content: center; margin-top: var(--gap-md); }
+.tag-success { background: rgba(16,185,129,0.1); color: #10B981; padding: 6rpx 20rpx; border-radius: 20rpx; font-size: 22rpx; }
+
+/* 空状态 */
+.empty-state { text-align: center; padding: var(--gap-xl) 0; }
+.empty-title { font-size: 36rpx; font-weight: 700; color: var(--text-primary); display: block; }
+.empty-desc { font-size: 26rpx; color: var(--text-tertiary); margin: var(--gap-sm) 0 var(--gap-lg); display: block; }
+.btn-primary { background: linear-gradient(135deg, #4A6CF7, #3451D1); color: white; padding: 20rpx 64rpx; border-radius: 16rpx; display: inline-flex; align-items: center; justify-content: center; font-size: 30rpx; font-weight: 600; }
+
+/* 底部操作栏 */
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: var(--gap-md); display: flex; gap: var(--gap-md); box-shadow: 0 -4rpx 12rpx rgba(0,0,0,0.08); }
+.bottom-bar .btn { flex: 1; height: 88rpx; font-size: 28rpx; border-radius: 16rpx; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+.btn-secondary { background: var(--bg-primary); color: var(--text-primary); border: 2rpx solid var(--border); }
+.btn-primary { background: linear-gradient(135deg, #4A6CF7, #3451D1); color: white; }
+.btn:active { opacity: 0.9; transform: scale(0.98); }
+.btn-primary:active { opacity: 0.9; transform: scale(0.98); }
+
+/* 分享弹窗 */
+.share-modal { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-radius: 32rpx 32rpx 0 0; padding: var(--gap-lg); z-index: 100; }
+.share-title { font-size: 32rpx; font-weight: 700; text-align: center; margin-bottom: var(--gap-lg); display: block; }
+.share-options { display: flex; justify-content: center; gap: var(--gap-xl); }
+.share-option { display: flex; flex-direction: column; align-items: center; gap: var(--gap-sm); }
+.share-icon { width: 96rpx; height: 96rpx; border-radius: 50%; background: var(--bg-primary); display: flex; align-items: center; justify-content: center; font-size: 40rpx; }
+.share-label { font-size: 22rpx; color: var(--text-secondary); }
+.share-cancel { width: 100%; height: 88rpx; background: var(--bg-primary); border-radius: 16rpx; display: flex; align-items: center; justify-content: center; font-size: 28rpx; color: var(--text-secondary); margin-top: var(--gap-lg); }
+.overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 99; }

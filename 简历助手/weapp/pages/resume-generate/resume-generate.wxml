@@ -1,0 +1,110 @@
+<!-- 简历生成页面 -->
+<view class="page">
+  <view class="container">
+    <view class="hero-text">
+      <text class="hero-title">生成针对性简历</text>
+      <text class="hero-desc">智能生成高匹配度简历，突出 JD 要求的核心能力</text>
+    </view>
+
+    <!-- 生成前确认 -->
+    <view class="card" wx:if="{{!generating && !generated}}">
+      <view class="section-title">生成配置</view>
+      
+      <view class="config-item">
+        <text class="config-label">简历风格</text>
+        <view class="config-options">
+          <view class="config-option {{resumeStyle === 'professional' ? 'active' : ''}}" bindtap="setStyle" data-style="professional">
+            <text class="option-icon">👔</text>
+            <text class="option-text">专业正式</text>
+          </view>
+          <view class="config-option {{resumeStyle === 'creative' ? 'active' : ''}}" bindtap="setStyle" data-style="creative">
+            <text class="option-icon">🎨</text>
+            <text class="option-text">创意活泼</text>
+          </view>
+          <view class="config-option {{resumeStyle === 'balanced' ? 'active' : ''}}" bindtap="setStyle" data-style="balanced">
+            <text class="option-icon">⚖️</text>
+            <text class="option-text">均衡适中</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="config-item">
+        <text class="config-label">简历长度</text>
+        <view class="config-options">
+          <view class="config-option {{resumeLength === 'short' ? 'active' : ''}}" bindtap="setLength" data-length="short">精简版 (1页)</view>
+          <view class="config-option {{resumeLength === 'medium' ? 'active' : ''}}" bindtap="setLength" data-length="medium">标准版 (1-2页)</view>
+          <view class="config-option {{resumeLength === 'detailed' ? 'active' : ''}}" bindtap="setLength" data-length="detailed">详细版 (2-3页)</view>
+        </view>
+      </view>
+
+      <view class="config-item">
+        <text class="config-label">附加信息</text>
+        <view class="config-switches">
+          <view class="switch-item">
+            <text>包含职业测评建议</text>
+            <switch checked="{{includeAssessment}}" bindchange="toggleAssessment" />
+          </view>
+          <view class="switch-item">
+            <text>突出项目经验</text>
+            <switch checked="{{highlightProjects}}" bindchange="toggleProjects" />
+          </view>
+        </view>
+      </view>
+
+      <view class="btn btn-primary btn-large" bindtap="generateResume">
+        {{hasProfile ? '生成简历' : '请先完善个人资料'}}
+      </view>
+    </view>
+
+    <!-- 生成中 -->
+    <view class="generating-state" wx:if="{{generating}}">
+      <view class="generating-animation">
+        <view class="bar"></view>
+        <view class="bar delay1"></view>
+        <view class="bar delay2"></view>
+        <view class="bar delay3"></view>
+      </view>
+      <text class="generating-title">正在生成简历...</text>
+      <text class="generating-desc">AI 正在根据你的个人资料和职位要求进行针对性优化</text>
+      <text class="generating-tip">正在优化：{{currentOptimizing}}</text>
+    </view>
+
+    <!-- 生成完成 -->
+    <view class="generated-result" wx:if="{{generated && resume}}">
+      <view class="success-banner">
+        <text class="success-icon">✅</text>
+        <text class="success-title">简历生成成功！</text>
+        <text class="success-desc">匹配度 {{matchScore}}%，针对 {{targetPosition || '目标岗位'}} 已优化</text>
+      </view>
+
+      <!-- 简历预览 -->
+      <view class="card">
+        <view class="section-title">职业概要</view>
+        <text class="summary-text">{{resume.professionalSummary}}</text>
+      </view>
+
+      <view class="card" wx:if="{{resume.workExperience && resume.workExperience.length > 0}}">
+        <view class="section-title">工作经历</view>
+        <view class="exp-list">
+          <view class="exp-card" wx:for="{{resume.workExperience}}" wx:key="index">
+            <view class="exp-company">{{item.company}}</view>
+            <view class="exp-title">{{item.title}}</view>
+            <text class="exp-desc">{{item.description}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="card">
+        <view class="section-title">技能清单</view>
+        <view class="skills-list">
+          <text class="skill-tag" wx:for="{{resume.skills}}" wx:key="index">{{item.name}}</text>
+        </view>
+      </view>
+
+      <view class="action-bar">
+        <view class="btn btn-primary" bindtap="previewResume">查看完整简历</view>
+        <view class="btn btn-secondary" bindtap="regenerate">重新生成</view>
+      </view>
+    </view>
+  </view>
+</view>

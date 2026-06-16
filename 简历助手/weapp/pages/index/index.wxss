@@ -1,0 +1,241 @@
+/* 首页样式 */
+.page {
+  padding-bottom: 120rpx;
+}
+
+/* 顶部英雄区域 */
+.hero-section {
+  position: relative;
+  padding: 60rpx var(--gap-md) 80rpx;
+  margin: -1rpx;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+  border-radius: 0 0 48rpx 48rpx;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 56rpx;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 4rpx;
+  margin-bottom: 16rpx;
+  background: linear-gradient(135deg, #4A6CF7, #7C3AED);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 48rpx;
+  line-height: 1.5;
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48rpx;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-num {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.6);
+}
+
+.stat-divider {
+  width: 2rpx;
+  height: 60rpx;
+  background: rgba(255,255,255,0.2);
+}
+
+/* 快速操作区域 */
+.quick-actions {
+  padding: 0 var(--gap-md);
+  margin-top: -48rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-md);
+}
+
+.action-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 32rpx 24rpx;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.action-card:active {
+  transform: scale(0.96);
+}
+
+.action-icon {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
+.icon-text {
+  font-size: 44rpx;
+}
+
+.action-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+}
+
+.action-desc {
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+/* 工作流程 */
+.workflow {
+  padding: var(--gap-lg) var(--gap-md);
+}
+
+.workflow-steps {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: var(--gap-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-md);
+}
+
+.step-number {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  font-size: 24rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.step-desc {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+}
+
+.step-connector {
+  width: 2rpx;
+  height: 32rpx;
+  background: var(--border);
+  margin-left: 23rpx;
+  margin: 8rpx 0 8rpx 23rpx;
+}
+
+/* 特性区域 */
+.features {
+  padding: 0 var(--gap-md);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-md);
+}
+
+.feature-item {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 32rpx 24rpx;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.feature-icon {
+  font-size: 48rpx;
+  margin-bottom: 12rpx;
+}
+
+.feature-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+}
+
+.feature-desc {
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--gap-md);
+  padding-left: var(--gap-sm);
+  border-left: 6rpx solid var(--primary);
+}

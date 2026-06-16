@@ -1,0 +1,18 @@
+﻿{
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": true,
+    "enhance": true,
+    "packNpmRelationList": [],
+    "babelSetting": { "ignore": [], "disablePlugins": [], "outputPath": "" },
+    "useCompilerPlugins": false,
+    "minifyWXML": true
+  },
+  "compileType": "miniprogram",
+  "simulatorPluginLibVersion": {},
+  "packOptions": { "ignore": [], "include": [] },
+  "appid": "wx0a2d65a9b58950c2",
+  "editorSetting": {},
+  "cloudfunctionRoot": "cloud-functions/"
+}
